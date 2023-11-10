@@ -1,37 +1,23 @@
-import datetime
-cost_room = [25,34,50,80]
+from datetime import datetime
 
-class KhachHang:
-    def __init__(self,id) -> None:
-        self.id = id
-        
-        self.name = str(input())
-        
-        self.number_room = str(input())
-        
-        day_in = str(input())
-        day_out = str(input())
-        self.day_in = datetime.datetime.strptime(day_in, "%d/%m/%Y")
-        self.day_out = datetime.datetime.strptime(day_out, "%d/%m/%Y")
-        self.day = (self.day_out - self.day_in).days + 1
-            
-        self.cost_add = int(input())
-        
-        self.cost_all = cost_room[int(self.number_room[0])-1]*self.day + self.cost_add
+tg = [0, 25, 34, 50, 80]
+
+class KhachHang :
+    def __init__(self, id, ten, phong, ngayDen, ngayDi, phuThu) :
+        self.id = 'KH{0:0>2}'.format(id)
+        self.ten = ten
+        self.phong = phong
+        self.ngayO = str(datetime.strptime(ngayDi, '%d/%m/%Y') - datetime.strptime(ngayDen, '%d/%m/%Y')).split()[0]
+        if self.ngayO == '0:00:00' : self.ngayO = 1
+        else : self.ngayO = int(self.ngayO) + 1
+        self.tong = tg[int(self.phong[0])] * self.ngayO + phuThu
     
-    def __str__(self) -> str:
-        return self.id+' '+self.name+' '+self.number_room+' '+str(self.day)+' '+str(self.cost_all)
-    
-if __name__ == "__main__" :
-    n = int(input())
-    ds_kh = []
-    for i in range(1,n+1):
-        if i < 10:
-            id = "KH0" + str(i)
-        else :
-            id = "KH" + str(i)
-        ds_kh.append(KhachHang(id))
-    
-    ds_kh = sorted(ds_kh, key= lambda x : -x.cost_all)
-    for i in ds_kh:
-        print(i)
+    def __str__(self):
+        return self.id + ' ' + self.ten + ' ' + self.phong + ' ' + str(self.ngayO) + ' ' + str(self.tong)
+
+n = int(input())
+a = []
+for i in range(n):
+    a.append(KhachHang(i+1, input(), input(), input().strip(), input().strip(), int(input())))
+a.sort(key = lambda k : -k.tong)
+print(*a, sep = '\n')
